@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import NavigationBar from "./components/NavigationBar";
+import Home from "./pages/Home";
+import Movies from "./pages/Movies";
+import MovieDetails from "./pages/MovieDetails";
+import NotFound from "./pages/NotFound";
+import Favourites from "./pages/Favourites";
+import LanguageContext from "./context/language";
+import { useState } from "react";
 
 function App() {
+  const [contextLang, setContextLang] = useState("en");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <LanguageContext.Provider value={{ contextLang, setContextLang }}>
+        <NavigationBar />
+        <div className="container my-5">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/movies" component={Movies} />
+            <Route path="/favourites" component={Favourites} />
+            <Route path="/movieDetails/:id" component={MovieDetails} />
+            <Route path="*" component={NotFound} />
+          </Switch>
+        </div>
+      </LanguageContext.Provider>
+    </Router>
   );
 }
 
